@@ -44,6 +44,15 @@ class Transformer(Asset):
         return round(self.load_mw * efficiency, 1)
 
 
+class SolarPanel(Asset):
+    def __init__(self, asset_id, location, peak_mw):
+        super().__init__(asset_id, location)
+        self.peak_mw = peak_mw
+
+    def power_output_mw(self):
+        sunlight = random.uniform(0.0, 1.0)
+        return round(self.peak_mw * sunlight * self.get_health() / 100, 1)
+
 class GridMonitor:
     def __init__(self):
         self.assets = []
@@ -69,6 +78,7 @@ if __name__ == "__main__":
     grid.add(GasTurbine("GT-01", "Jaipur", 500))
     grid.add(WindTurbine("WT-07", "Jaisalmer", 8))
     grid.add(Transformer("TR-03", "Ajmer", 400))
+    grid.add(SolarPanel("SP-02", "Bhadla", 50))
 
     for day in range(1, 4):
         print(f"--- Day {day} ---")
